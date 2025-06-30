@@ -1,0 +1,33 @@
+# Python __pycache__ and virtual environment
+server/__pycache__/
+*.py[cod]
+*.env
+*.venv/
+.venv/
+env/
+venv/
+
+# Uploads folder (user-uploaded files like images)
+server/uploads/
+
+# Ignore log and temp files
+*.log
+*.tmp
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.swp
+
+# Node.js (for Next.js frontend)
+node_modules/
+.next/
+dist/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS-specific
+.DS_Store
+Thumbs.db
