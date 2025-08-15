@@ -1,16 +1,9 @@
 'use client';
 
+import { AccordionProps } from '@component/types';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
-type AccordionItem = {
-  question: string;
-  answer: string | React.ReactNode;
-};
-
-type AccordionProps = {
-  items: AccordionItem[];
-};
 
 export default function Accordion({ items }: AccordionProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);

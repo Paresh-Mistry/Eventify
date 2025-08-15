@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from database import Base  # assuming you have a Base from declarative_base()
 import enum
 from datetime import datetime
+import secrets
 
 
 class UserRole(enum.Enum):
@@ -25,6 +26,7 @@ class User(Base):
     # Relationships
     events = relationship("Event_create", back_populates="organizer") 
     bookings = relationship("Booking", back_populates="user")  
+    teams = relationship("Team", back_populates="leader", cascade="all, delete-orphan")
 
 
 class Event_create(Base):
@@ -38,15 +40,19 @@ class Event_create(Base):
     is_online = Column(Boolean, default=False)
     date = Column(Date, nullable=False)
     start_time = Column(Time, nullable=True)
+    price = Column(Float , nullable=True)
     end_time = Column(Time, nullable=True)
     banner_image = Column(String, nullable=True)
     organizer_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    # team_id = Column(Integer, ForeignKey("team.id"), nullable=True)
+
 
     # Optional relationship to a User model (if you want to link events to organizers)
     organizer = relationship("User", back_populates="events")  # if reverse relation is set
     bookings = relationship("Booking", back_populates="event")
     payments = relationship("Payment", back_populates="event", cascade="all, delete-orphan")
     faqs = relationship("FAQ", back_populates="event", cascade="all, delete-orphan")
+    teams = relationship("Team", back_populates="event", cascade="all, delete-orphan")
     created_at = Column(Date, nullable=False)
 
     def __repr__(self):
@@ -75,6 +81,43 @@ class FAQ(Base):
     event_id = Column(Integer, ForeignKey("events.id" , ondelete="CASCADE"))
 
     event = relationship("Event_create", back_populates="faqs")
+
+
+
+# ----------------------
+# TEAM MODEL (NEW)
+# ----------------------
+class Team(Base):
+    __tablename__ = "teams"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    join_code = Column(String, unique=True, index=True, default=lambda: secrets.token_hex(4))
+    event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
+    leader_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    event = relationship("Event_create", back_populates="teams")
+    leader = relationship("User", back_populates="teams")
+    members = relationship("TeamMember", back_populates="team", cascade="all, delete-orphan")
+
+
+# ----------------------
+# TEAM MEMBERS (NEW)
+# ----------------------
+class TeamMember(Base):
+    __tablename__ = "team_members"
+
+    id = Column(Integer, primary_key=True, index=True)
+    team_id = Column(Integer, ForeignKey("teams.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    joined_at = Column(DateTime, default=datetime.utcnow)
+
+    team = relationship("Team", back_populates="members")
+    user = relationship("User")  # could also add back_populates if needed
+
+
 
 
 class Payment(Base):

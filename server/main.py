@@ -5,6 +5,9 @@ from fastapi.staticfiles import StaticFiles
 
 import uvicorn
 
+import sys
+sys.dont_write_bytecode = True
+
 from routes import routes
 
 app = FastAPI(debug=True)

@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import OrganizerSection from '@component/components/OrganizerSection';
 
 export default function CreateEvent() {
+
+    
     const [step, setStep] = useState<number>(1);
     const [formData, setFormData] = useState({
         title: '',
@@ -16,6 +18,7 @@ export default function CreateEvent() {
         mode: '',
         startTime: '',
         endTime: '',
+        price: '',
         bannerImage: null as File | null,
         faqs: [{ question: '', answer: '' }],
     });
@@ -51,8 +54,9 @@ export default function CreateEvent() {
         form.append("date", formData.date);
         form.append("start_time", formData.startTime);
         form.append("end_time", formData.endTime);
+        form.append("price", formData.price);
 
-        formData.faqs.forEach((faq, index) => { 
+        formData.faqs.forEach((faq, index) => {
             form.append(`faq_questions`, faq.question);
             form.append(`faq_answers`, faq.answer);
         });
@@ -67,7 +71,6 @@ export default function CreateEvent() {
             const response = await fetch("http://127.0.0.1:8000/events/", {
                 method: "POST",
                 body: form,
-
             });
 
             const data = await response.json(); // 🔥 READ ONLY ONCE
@@ -75,7 +78,6 @@ export default function CreateEvent() {
             console.log(data.data)
 
             if (!response.ok) {
-                // Response isn't OK, handle error
                 alert(`Error: ${data.detail || "Something went wrong."}`);
                 return;
             }
@@ -92,19 +94,19 @@ export default function CreateEvent() {
 
 
     return (
-        <div className="flex items-center justify-center px-4">
+        <div className="flex items-center justify-center px-6">
             <form
                 onSubmit={handleSubmit}
-                className="w-full p-8 rounded-lg space-y-6"
+                className="w-full rounded-lg space-y-6"
             >
-                <h1 className="text-3xl font-bold mb-4">{step == 1 ? "" : step + " - Step"}</h1>
+                <h1 className="text-3xl pt-4 font-bold mb-4">{step == 1 ? "" : step - 1 + " - Step"}</h1>
 
                 {step == 1 && (
                     <OrganizerSection nextStep={nextStep} />
                 )}
 
                 {step === 2 && (
-                    <div className='flex md:flex-row flex-col w-full gap-6'>
+                    <div className='flex md:flex-row pb-4 flex-col w-full gap-6'>
                         <div className='md:w-5/12 space-y-8'>
                             <div>
                                 <label className="block mb-1 font-semibold text-gray-700">Title</label>
@@ -130,17 +132,31 @@ export default function CreateEvent() {
                                     required
                                 />
                             </div>
-                            <div>
-                                <label className="block mb-1 font-semibold text-gray-700">Location</label>
-                                <input
-                                    type="text"
-                                    name="location"
-                                    value={formData.location}
-                                    onChange={handleChange}
-                                    placeholder='Ex. Bengaluru'
-                                    className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all duration-200"
-                                />
+                            <div className='flex gap-2 w-full'>
+                                <div className='w-1/2'>
+                                    <label className="block mb-1 font-semibold text-gray-700">Location</label>
+                                    <input
+                                        type="text"
+                                        name="location"
+                                        value={formData.location}
+                                        onChange={handleChange}
+                                        placeholder='Ex. Bengaluru'
+                                        className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all duration-200"
+                                    />
+                                </div>
+                                <div className='w-1/2'>
+                                    <label className="block mb-1 font-semibold text-gray-700">Price</label>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        value={formData.price}
+                                        onChange={handleChange}
+                                        placeholder='Ex. 200Rs'
+                                        className="w-full p-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition-all duration-200"
+                                    />
+                                </div>
                             </div>
+
                             <div className="flex items-center space-x-2">
                                 <input
                                     type="checkbox"
@@ -302,7 +318,7 @@ export default function CreateEvent() {
                 )}
 
 
-                {step == 1 ? "" : <div className="flex justify-between mt-6">
+                {step == 1 ? "" : <div className="flex justify-between my-6">
                     <button
                         type="button"
                         onClick={prevStep}
@@ -325,7 +341,6 @@ export default function CreateEvent() {
                         </button>
                     ) || (
                             <>
-                                {console.log("received....")}
                                 <button
                                     type="submit"
                                     className="px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded"

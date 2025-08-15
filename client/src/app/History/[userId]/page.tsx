@@ -1,27 +1,18 @@
-"use client"; // Marks the component as client-side
+"use client";
 
+import { Booking } from '@component/types/event';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-type Event = {
-    id: number;
-    title: string;
-};
-
-type Booking = {
-    id: number;
-    user_id: number;
-    event_id: number;
-    status: string;
-    booking_date: string;
-    event?: Event; // Optional in case it's not returned
-};
 
 export default function BookingHistoryPage({ params }: { params: { userId: string } }) {
 
+
+    
     const [bookings, setBookings] = useState<Booking[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+
     
     useEffect(() => {
         const fetchHistory = async () => {
@@ -37,9 +28,12 @@ export default function BookingHistoryPage({ params }: { params: { userId: strin
         };
 
         fetchHistory();
-    }, []);  // Re-run when router or userId is ready
+    }, []);  
+
+
 
     return (
+
         <div className="min-h-screen bg-gray-100 p-6">
             <h1 className="text-2xl font-bold mb-4">Booking History</h1>
 
@@ -72,5 +66,7 @@ export default function BookingHistoryPage({ params }: { params: { userId: strin
                 </div>
             )}
         </div>
+
     );
+    
 }

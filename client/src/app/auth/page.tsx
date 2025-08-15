@@ -1,0 +1,88 @@
+"use client"
+
+import React, { useState } from "react";
+
+const AuthPage = () => {
+  const [isSignup, setIsSignup] = useState(true);
+  const [role, setRole] = useState("user");
+
+  return (
+    <div className="flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8">
+        {/* Title */}
+        <h2 className="text-3xl font-bold text-center mb-2">
+          {isSignup ? "Create Account" : "Welcome Back"}
+        </h2>
+        <p className="text-gray-400 text-center mb-6">
+          {isSignup
+            ? "Join as a participant or host an event"
+            : "Sign in to your account"}
+        </p>
+
+        {/* Role Selector */}
+        <div className="flex justify-center gap-4 mb-6">
+          <button
+            onClick={() => setRole("user")}
+            className={`px-4 py-2 rounded-full border transition ${role === "user"
+                ? "bg-blue-600 text-white border-blue-600"
+                : "bg-transparent border-gray-500 text-gray-300 hover:border-blue-400"
+              }`}
+          >
+            User
+          </button>
+          <button
+            onClick={() => setRole("owner")}
+            className={`px-4 py-2 rounded-full border transition ${role === "owner"
+                ? "bg-green-600 text-white border-green-600"
+                : "bg-transparent border-gray-500 text-gray-300 hover:border-green-400"
+              }`}
+          >
+            Owner
+          </button>
+        </div>
+
+        {/* Form */}
+        <form className="space-y-4">
+          {isSignup && (
+            <input
+              type="text"
+              placeholder="Full Name"
+              className="w-full px-4 py-2 rounded-lg bg-white/10 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          )}
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full px-4 py-2 rounded-lg bg-white/10 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="w-full px-4 py-2 rounded-lg bg-white/10 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white font-semibold shadow-lg hover:opacity-90 transition"
+          >
+            {isSignup ? "Sign Up" : "Sign In"} as {role}
+          </button>
+        </form>
+
+        {/* Toggle Sign In / Sign Up */}
+        <p className="text-gray-400 text-sm text-center mt-6">
+          {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
+          <button
+            onClick={() => setIsSignup(!isSignup)}
+            className="text-blue-400 hover:underline"
+          >
+            {isSignup ? "Sign In" : "Sign Up"}
+          </button>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default AuthPage;

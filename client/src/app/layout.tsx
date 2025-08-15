@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
+import { getCurrentUser } from "./lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -13,12 +15,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const user = getCurrentUser();
+
+    // if (!user) {
+    //   redirect('/auth'); // 🔒 Not authenticated, send to login
+    // }
+
+
   return (
     <html lang="en">
       <body
         className={`antialiased`}
       >
         <Navbar/>
+        {/* {user.name} */}
         {children}
       </body>
     </html>

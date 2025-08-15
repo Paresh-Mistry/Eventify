@@ -13,6 +13,7 @@ interface EventCardType {
   organizer: {
     name: string
   }
+  price: number
 }
 
 interface BookingCountType {
@@ -23,16 +24,19 @@ interface BookingCountType {
 const EventCard: React.FC<{ inputVal?: string }> = ({ inputVal }) => {
   const [events, setEvents] = useState<EventCardType[]>([])
   const [participants, setParticipants] = useState<BookingCountType[]>([])
+  const [error, seterror] = useState('')
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response1 = await axios.get('http://127.0.0.1:8000/event_fetch_data')
+        console.log(response1.data)
         const response2 = await axios.get('http://127.0.0.1:8000/event-booking-count')
+
         setEvents(response1.data)
         setParticipants(response2.data)
-      } catch (error) {
-        console.error("Failed to fetch events:", error)
+      } catch (e) {
+        seterror(`Failed to fetch events: ${e?.response?.data?.detail}`)
       }
     }
 
@@ -49,8 +53,8 @@ const EventCard: React.FC<{ inputVal?: string }> = ({ inputVal }) => {
     <>
       {
         filteredEvents.length === 0 ? (
-          <span className='bg-red-100 text-red-600 text-sm px-4 py-2 rounded shadow'>
-            NO EVENTS FOUND NOW ..
+          <span className='bg-red-50 text-red-600 text-sm px-4 py-2 rounded shadow'>
+            {error}
           </span>
         ) : (
           filteredEvents.map((e) => {
@@ -65,7 +69,7 @@ const EventCard: React.FC<{ inputVal?: string }> = ({ inputVal }) => {
                       <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition">
                         {e.title}
                       </h3>
-                      <p className="text-xs text-gray-400 mt-1">#Hackathon #Event</p>
+                      <p className="text-xs text-gray-400 mt-1">#Hackathon #Event RS.{e.price}</p>
                     </div>
 
                     <div className="mt-4 text-sm text-gray-600">

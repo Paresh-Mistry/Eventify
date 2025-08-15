@@ -4,10 +4,13 @@ import { useState } from 'react';
 import EventCard from '@component/components/EventCard';
 
 export default function Page() {
+    
     const [inputVal, setInputVal] = useState<string>('')
 
     return (
+
         <div className='max-w-7xl mx-auto px-4 py-6'>
+
             {/* Header + Search */}
             <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
                 <h1 className='text-2xl font-semibold text-gray-800'>
@@ -26,6 +29,8 @@ export default function Page() {
             <div className='grid gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3'>
                 <EventCard inputVal={inputVal} />
             </div>
+
         </div>
+
     )
 }

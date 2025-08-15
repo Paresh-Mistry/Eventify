@@ -2,9 +2,8 @@ from fastapi import APIRouter, HTTPException, Depends, Form, File, UploadFile, R
 from sqlalchemy.orm import Session , joinedload
 from sqlalchemy import func
 from typing import Optional
-from schemas.schemas import EventCreate, EventOut, UserOut, UserRole, BookingCreate, BookingOut
-from models.model import Base
-from models.model import Event_create, User, Booking, FAQ
+from schemas.schemas import EventOut, UserOut, UserRole, BookingCreate, BookingOut, TeamOut
+from models.model import Base, Event_create, User, Booking, FAQ, Team, TeamMember
 from datetime import date, time
 from typing import List
 from utils.access_token import create_access_token , SECRET_KEY, ALGORITHM
@@ -12,12 +11,16 @@ from database import get_db, engine
 from fastapi import Depends, Cookie
 from jose import jwt, JWTError
 from passlib.hash import bcrypt
-import os
+import os, secrets
 
 Base.metadata.create_all(bind=engine)
 
 router = APIRouter()
 
+
+def generate_join_code(length=6):
+    import random, string
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
 
 @router.post("/users/", response_model=UserOut)
 def create_user(
@@ -82,6 +85,70 @@ def get_current_user_from_cookie(access_token: str = Cookie(None), db: Session =
         raise HTTPException(status_code=401, detail="Invalid or expired token")
     
 
+@router.post("/create")
+def create_team(
+    name: str = Form(...),
+    event_id: int = Form(...),
+    leader_id: int = Form(...),
+    db: Session = Depends(get_db)
+    ):
+    try:
+    # Check event exists
+        event = db.query(Event_create).filter(Event_create.id == event_id).first()
+        print(event)
+        if not event:
+            raise HTTPException(status_code=404, detail="Event not found")
+        
+        # Create team
+        team = Team(
+            name=name,
+            event_id=event_id,
+            leader_id=leader_id,
+            join_code=secrets.token_hex(4)  
+        )
+        print(team)
+        db.add(team)
+        db.commit()
+        db.refresh(team)
+
+        # Add leader as first member
+        leader_member = TeamMember(team_id=team.id, user_id=leader_id)
+        db.add(leader_member)
+        db.commit()
+
+        return {
+            "message": "Team created successfully",
+            "team_id": team.id,
+            "join_code": team.join_code
+        }
+    except Exception as e:
+        print("Error while post...")
+        raise HTTPException(status_code=404 , detail="{}".format(str(e)))
+
+
+# Join a team via code
+@router.post("/join")
+def join_team(user_id: int, join_code: str, db: Session = Depends(get_db)):
+    team = db.query(Team).filter(Team.join_code == join_code).first()
+    if not team:
+        raise HTTPException(status_code=404, detail="Invalid join code")
+
+    # Prevent duplicate joining
+    already_member = db.query(TeamMember).filter(
+        TeamMember.team_id == team.id,
+        TeamMember.user_id == user_id
+    ).first()
+    if already_member:
+        raise HTTPException(status_code=400, detail="Already in the team")
+
+    # Add member
+    member = TeamMember(team_id=team.id, user_id=user_id)
+    db.add(member)
+    db.commit()
+
+    return {"message": "Joined team successfully", "team_id": team.id}
+    
+
 @router.get("/me")
 def get_me(user: User = Depends(get_current_user_from_cookie)):
     return user
@@ -100,6 +167,7 @@ async def create_event_form(
     banner_image: Optional[UploadFile] = File(None),
     faq_questions: List[str] = Form(default=[]),
     faq_answers: List[str] = Form(default=[]),
+    price: float = Form(...),
     db: Session = Depends(get_db)
 ):
     # 1. Check if organizer exists
@@ -128,11 +196,22 @@ async def create_event_form(
         end_time=end_time,
         banner_image=banner_filename,
         organizer_id=organizer.id,
+        price= price,
         created_at=date
     )
     db.add(new_event)
     db.commit()
     db.refresh(new_event)
+
+
+    default_team = Team(
+        name=f"{title} Team",
+        event_id=new_event.id,
+        leader_id=organizer.id
+    )
+    db.add(default_team)
+    db.commit()
+    db.refresh(default_team)
 
     for question, answer in zip(faq_questions, faq_answers):
         if question.strip():  # skip empty
@@ -146,7 +225,10 @@ async def create_event_form(
     db.commit()
     db.refresh(new_event)
 
-    return new_event
+    return {
+        "team_id":default_team.id
+    }
+    
 
 @router.get("/event_fetch_data", response_model=List[EventOut], status_code=200)
 async def fetch_events(db: Session = Depends(get_db)):
@@ -155,23 +237,47 @@ async def fetch_events(db: Session = Depends(get_db)):
         .all()
     
     if not events_data:
-        raise HTTPException(status_code=404, detail="No events found")
+        raise HTTPException(status_code=404,    detail="No events found")
     return events_data
 
-@router.get("/events/{eventId}", response_model=EventOut)
-def get_event(eventId: int, db: Session = Depends(get_db)):
-    event = db.query(Event_create).filter(Event_create.id == eventId).first()
+
+
+@router.get("/events/{event_id}", response_model=EventOut)
+def get_event(event_id: int, db: Session = Depends(get_db)):
+    # Get event
+    event = db.query(Event_create).filter(Event_create.id == event_id).first()
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
+
+    # Get team linked to event
+    team = db.query(Team).filter(Team.event_id == event_id).first()
+
+    # Attach team data to event object (if your EventOut schema supports it)
+    if team:
+        event.team = team # Assuming Event_create has a 'team' relationship
+
     return event
 
+
+
 @router.post("/booking", response_model=BookingOut)
-def create_booking(booking: BookingCreate, db: Session = Depends(get_db)):
+def create_booking(booking: BookingCreate, db: Session = Depends(get_db), user: User = Depends(get_current_user_from_cookie)):
+    # If team_id is provided, validate membership
+    if hasattr(booking, "team_id") and booking.team_id:
+        membership = db.query(TeamMember).filter(
+            TeamMember.team_id == booking.team_id,
+            TeamMember.user_id == user.id
+        ).first()
+        if not membership:
+            raise HTTPException(status_code=403, detail="You are not a member of this team")
+
     new_booking = Booking(**booking.dict())
     db.add(new_booking)
     db.commit()
     db.refresh(new_booking)
     return new_booking
+
+
 
 @router.get("/event-booking-count")
 def event_booking_count(db: Session = Depends(get_db)):
@@ -180,6 +286,8 @@ def event_booking_count(db: Session = Depends(get_db)):
         func.count(Booking.id).label("count")
     ).group_by(Booking.event_id).all()
     return [{"event_id": event_id, "booking_count": count} for event_id, count in data]
+
+
 
 @router.get("/history/{userId}", response_model=List[BookingOut])
 def user_history(userId: int, db: Session = Depends(get_db)):

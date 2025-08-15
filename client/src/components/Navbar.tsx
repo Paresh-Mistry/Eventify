@@ -2,9 +2,11 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { getCurrentUser } from "@component/app/lib/auth";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const isLogin = getCurrentUser()
 
   return (
 
@@ -29,15 +31,13 @@ const Navbar: React.FC = () => {
               Organize Hackathons
             </Link>
             <div className="relative group">
-              <button className="text-gray-700 hover:text-blue-600 font-medium focus:outline-none">
+              {isLogin && <button className="text-gray-700 hover:text-blue-600 font-medium focus:outline-none">
                 Profile
-              </button>
+              </button>}
               {/* Dropdown */}
               <div className="absolute left-0 mt-2 w-44 bg-white border border-gray-500 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
                 <Link href="/about" className="block px-4 py-2 hover:bg-gray-200">My Hackathons</Link>
                 <Link href="/about" className="block px-4 py-2 hover:bg-gray-200">Edit Profile</Link>
-                <Link href="/about" className="block px-4 py-2 hover:bg-gray-200">About</Link>
-                <Link href="/contact" className="block px-4 py-2 hover:bg-gray-200">Contact</Link>
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
           <Link href="/Events" onClick={()=>setOpen(false)} className="block px-2 text-gray-700 hover:text-blue-600 font-medium">
             Hackathons
           </Link>
-          <Link href="/Events" onClick={()=>setOpen(false)} className="block px-2 text-gray-700 hover:text-blue-600 font-medium">
+          <Link href="/create-events" onClick={()=>setOpen(false)} className="block px-2 text-gray-700 hover:text-blue-600 font-medium">
             Organize Hackathons
           </Link>
         </div>
