@@ -25,9 +25,18 @@ async function getEvent(eventId: string): Promise<EventType | null> {
 
 export default async function EventPage({ params }: { params: { eventId: string } }) {
 
-    const event = await getEvent(params?.eventId);
+    const event = await getEvent(params.eventId);
 
     console.log("Event ID: ", event?.id)
+
+    const eventdate = (date:string) => {
+        if(Number(date) > 0 && Number(date) < 12){
+            return date + " am"
+        }
+        else{
+            return date + " pm"
+        }
+    }
 
     if (!event) {
         notFound()
@@ -84,7 +93,7 @@ export default async function EventPage({ params }: { params: { eventId: string 
                 {/* Description Section */}
 
                 <div className="px-4 py-5 mt-4 bg-white rounded-2xl shadow-md mx-2 border border-gray-200">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-3">Description</h3>
+                    <h3 className="text-2xl text-gray-800 mb-3">Description</h3>
                     <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                         {event.description}
                     </p>
@@ -93,7 +102,7 @@ export default async function EventPage({ params }: { params: { eventId: string 
                 {/* Contact Organizer */}
 
                 <div className="px-4 py-5 mt-4 bg-white rounded-2xl shadow-md mx-2 border border-gray-200">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">Contact Organizer</h3>
+                    <h3 className="text-2xl text-gray-800 mb-2">Contact Organizer</h3>
                     <Link href={`mailto:${event.email}`} className="text-blue-600 font-medium underline hover:text-blue-800 transition-colors">
                         {event.email}
                     </Link>
@@ -103,7 +112,7 @@ export default async function EventPage({ params }: { params: { eventId: string 
                 </div>
 
                 <div className="px-4 py-5 mt-4 bg-white rounded-2xl shadow-md mx-2 border border-gray-200">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">FAQ's</h3>
+                    <h3 className="text-2xl text-gray-800 mb-2">FAQ's</h3>
                     <span><Accordion items={event.faqs} /></span>
                 </div>
 
@@ -124,23 +133,23 @@ export default async function EventPage({ params }: { params: { eventId: string 
                         <div className='border-l-4 px-2 border-blue-500 rounded'>
                             <div className="flex flex-col">
                                 <span className="text-gray-500 font-medium">Start Time</span>
-                                <span className="text-base font-semibold">{event.start_time}</span>
+                                <span className="text-base font-medium">{eventdate(event.start_time.slice(0,5))}</span>
                             </div>
 
                             <div className="flex flex-col">
                                 <span className="text-gray-500 font-medium">End Time</span>
-                                <span className="text-base font-semibold">{event.end_time}</span>
+                                <span className="text-base font-medium">{eventdate(event.end_time.slice(0,5))}</span>
                             </div>
                         </div>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col"> 
                             <span className="text-gray-500 font-medium">Ongoing On</span>
-                            <span className="text-base font-semibold"><FormatDate eventdate={event.date} /></span>
+                            <span className="text-base font-medium"><FormatDate eventdate={event.date} /></span>
                         </div>
 
                         <div className="flex flex-col">
                             <span className="text-gray-500 font-medium">Venue</span>
-                            <span className="text-base font-semibold capitalize">
+                            <span className="text-base font-medium capitalize">
                                 {event.location}
                             </span>
                         </div>

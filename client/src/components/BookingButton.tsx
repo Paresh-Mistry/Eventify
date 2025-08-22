@@ -75,8 +75,9 @@ export default function BookButton({
       <TeamSection eventId={eventId} userId={userId} />
       <div className='text-sm text-gray-500 text-center relative'>
         <hr className='absolute border border-dashed z-0 w-full top-[50%]' />
-        <span className='z-50 bg-white backdrop-blur-2xl  '>OR</span>
+        <span className='z-50 bg-white backdrop-blur-2xl'>OR</span>
       </div>
+      
       <button
         onClick={handleClick}
         disabled={status === 'loading'}

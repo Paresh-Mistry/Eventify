@@ -20,13 +20,10 @@ export default function TeamSection({ eventId, userId }: { eventId: number; user
         formData.append("event_id", eventId.toString());
         formData.append("leader_id", userId.toString());
 
-        console.log(userId)
-
         try {
             const res = await axios.post("http://localhost:8000/create", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-            console.log(res.data)
             setMessage(res.data);
         } catch (error) {
             console.error("Error : ", error);
@@ -34,19 +31,23 @@ export default function TeamSection({ eventId, userId }: { eventId: number; user
         }
     };
 
-    const handleJoinTeam = async () => {
+    const handleJoinTeam = async (e:any) => {
+        e.preventDefault();
+        
         const formData = new FormData();
-        formData.append("event_id", eventId.toString());
         formData.append("team_code", joinCode);
+        formData.append("event_id", eventId.toString());
         formData.append("leader_id", userId.toString());
 
         try {
             const res = await axios.post("http://localhost:8000/join", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
+            console.log(res.data);
+            setMessage(res.data)
         } catch (error) {
             console.error(error);
-            console.log("FormData", formData)
+            console.log("FormData", userId , eventId )
         }
     };
 
@@ -60,7 +61,6 @@ export default function TeamSection({ eventId, userId }: { eventId: number; user
 
 
             {teamBox === "create" ? <div className="flex gap-1">
-                {/* <h3 className="text-lg font-semibold mb-2">Create a Team</h3> */}
                 <input
                     type="text"
                     placeholder="Team Name"
@@ -77,10 +77,9 @@ export default function TeamSection({ eventId, userId }: { eventId: number; user
             </div>
                 :
                 <div className="flex gap-1">
-                    {/* <h3 className="text-lg font-semibold mb-2">Join a Team</h3> */}
                     <input
                         type="text"
-                        placeholder="Enter Team Code"   
+                        placeholder="Enter Team Code"
                         value={joinCode}
                         onChange={(e) => setJoinCode(e.target.value)}
                         className="w-10/12 focus:outline-none border-b h-10 px-2 mb-2"
@@ -92,7 +91,7 @@ export default function TeamSection({ eventId, userId }: { eventId: number; user
                         <Check className="mx-auto" size={20} />
                     </button>
                 </div>}
-                
+
 
             {/* Message */}
             {message.join_code && (

@@ -6,7 +6,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-24 px-4 text-center">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded-sm dark:text-blue-400 border border-blue-400">Free | OpenSource Events</span>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mt-4 mb-4">Welcome to Eventify</h1>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans mt-4 mb-4">Welcome to Eventify</h1>
         <p className="text-lg md:text-xl mb-6">Discover and join amazing events near you!</p>
         <Link href={'/Events'} className="bg-blue-600 text-white px-6 py-2 rounded shadow hover:bg-blue-500 transition">
           Explore Events
