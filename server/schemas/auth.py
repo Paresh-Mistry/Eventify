@@ -1,0 +1,49 @@
+from pydantic import BaseModel, EmailStr
+from datetime import datetime
+from enum import Enum
+from typing import Optional
+
+
+# =================
+# AUTHENTICATION 
+# =================
+
+# 1. Enum for User Roles
+class UserRole(str, Enum):
+    user = "user"
+    organizer = "organizer"
+    admin = "admin"
+
+
+
+# 2. User Schemas
+class UserBase(BaseModel):
+    name: str
+    email: EmailStr
+    phone: Optional[str] = None
+    role: UserRole = UserRole.user
+    
+
+
+# Schema for creating a new user
+class UserCreate(UserBase):
+    password: str
+
+
+# Schema for returning user data (e.g., API response)
+class UserOut(UserBase):
+    id: int
+    created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class Token(BaseModel):
+    token: str
+    type: str = "bearer"
+
+
+
+
+        

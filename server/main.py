@@ -8,7 +8,7 @@ import uvicorn
 import sys
 sys.dont_write_bytecode = True
 
-from routes import routes
+from routes import router
 
 app = FastAPI(debug=True)
 
@@ -24,7 +24,7 @@ app.add_middleware(
 
 app.mount("/uploads", StaticFiles(directory="./uploads"), name="uploads")
 
-app.include_router(routes.router)
+app.include_router(router)
 
 
 if __name__ == "__main__":
