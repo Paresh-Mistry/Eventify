@@ -6,6 +6,28 @@ from datetime import datetime
 import secrets
 
 
+
+
+# ----------------------
+# TEAM MODEL (NEW)
+# ----------------------
+class Team(Base):
+    __tablename__ = "teams"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    join_code = Column(String, unique=True, index=True, default=lambda: secrets.token_hex(4))
+    event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
+    leader_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    event = relationship("Event_create", back_populates="teams")
+    leader = relationship("User", back_populates="teams")
+    members = relationship("TeamMember", back_populates="team", cascade="all, delete-orphan")
+
+
+
 class UserRole(enum.Enum):
     user = "user"
     organizer = "organizer"
@@ -65,6 +87,7 @@ class Booking(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"))
+    team_id = Column(Integer, ForeignKey("teams.id", ondelete="CASCADE"))
     booking_date = Column(DateTime(timezone=True), server_default=func.now())
     status = Column(String, default="confirmed")
 
@@ -83,24 +106,6 @@ class FAQ(Base):
     event = relationship("Event_create", back_populates="faqs")
 
 
-
-# ----------------------
-# TEAM MODEL (NEW)
-# ----------------------
-class Team(Base):
-    __tablename__ = "teams"
-
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    join_code = Column(String, unique=True, index=True, default=lambda: secrets.token_hex(4))
-    event_id = Column(Integer, ForeignKey("events.id", ondelete="CASCADE"), nullable=False)
-    leader_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    # Relationships
-    event = relationship("Event_create", back_populates="teams")
-    leader = relationship("User", back_populates="teams")
-    members = relationship("TeamMember", back_populates="team", cascade="all, delete-orphan")
 
 
 # ----------------------

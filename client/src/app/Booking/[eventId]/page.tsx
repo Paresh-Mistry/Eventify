@@ -161,6 +161,7 @@ export default async function EventPage({ params }: { params: { eventId: string 
                             organizerEmail={event.email}
                             eventTitle={event.title}
                             eventDate={<FormatDate eventdate={event.date} />}
+                            teamId = {event.team?.id}
                             userId={event.organizer_id}
                             eventId={event.id}
                         />

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Check, Copy } from "lucide-react";
 
-export default function TeamSection({ eventId, userId }: { eventId: number; userId: number }) {
+export default function TeamSection({ handleClick, eventId, userId }: { handleClick: any, eventId: number; userId: number }) {
     const [teamName, setTeamName] = useState("");
     const [joinCode, setJoinCode] = useState("");
+    const [user, setuser] = useState("");
     const [message, setMessage] = useState({
         message: "",
         team_id: null,
@@ -24,30 +25,42 @@ export default function TeamSection({ eventId, userId }: { eventId: number; user
             const res = await axios.post("http://localhost:8000/create", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
-            setMessage(res.data);
+            if (handleClick) {
+                handleClick()
+                setMessage(res.data);
+            }
         } catch (error) {
             console.error("Error : ", error);
             console.log(userId)
         }
     };
 
-    const handleJoinTeam = async (e:any) => {
+    const handleJoinTeam = async (e: any) => {
         e.preventDefault();
-        
+
         const formData = new FormData();
         formData.append("team_code", joinCode);
         formData.append("event_id", eventId.toString());
         formData.append("leader_id", userId.toString());
+
+        const payload = {
+            team_code: joinCode,
+            event_id: eventId,
+            leader_id: userId
+        };
 
         try {
             const res = await axios.post("http://localhost:8000/join", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             console.log(res.data);
-            setMessage(res.data)
+            if (handleClick) {
+                handleClick()
+                setMessage(res.data);
+            }
         } catch (error) {
             console.error(error);
-            console.log("FormData", userId , eventId )
+            console.log({ "Payload": payload })
         }
     };
 
@@ -77,6 +90,13 @@ export default function TeamSection({ eventId, userId }: { eventId: number; user
             </div>
                 :
                 <div className="flex gap-1">
+                    {/* <input
+                        type="number"
+                        placeholder="Enter Team Code"
+                        value={user}
+                        onChange={(e) => setuser(e.target.value)}
+                        className="w-2/12  focus:outline-none border-b h-10 px-2 mb-2"
+                    /> */}
                     <input
                         type="text"
                         placeholder="Enter Team Code"

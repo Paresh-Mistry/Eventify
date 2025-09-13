@@ -9,6 +9,7 @@ import { BookButtonProps } from '@component/types';
 export default function BookButton({
   userId,
   eventId,
+  teamId,
   eventDate,
   eventTitle,
   userEmail,
@@ -27,11 +28,14 @@ export default function BookButton({
     "Have fun and learn!"
   ];
 
+  console.log(teamId);
+  
   const handleBooking = async () => {
     try {
       setStatus('loading');
       const response = await axios.post('http://localhost:8000/booking/', {
         user_id: userId,
+        team_id: teamId,
         event_id: eventId,
         status: 'confirmed',
       });
@@ -72,7 +76,7 @@ export default function BookButton({
 
   return (
     <>
-      <TeamSection eventId={eventId} userId={userId} />
+      <TeamSection handleClick={handleClick} eventId={eventId} userId={userId} />
       <div className='text-sm text-gray-500 text-center relative'>
         <hr className='absolute border border-dashed z-0 w-full top-[50%]' />
         <span className='z-50 bg-white backdrop-blur-2xl'>OR</span>

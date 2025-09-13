@@ -26,6 +26,7 @@ export interface Booking  {
     id: number;
     user_id: number;
     event_id: number;
+    team_id: number;
     status: string;
     booking_date: string;
     event?: EventType; 
