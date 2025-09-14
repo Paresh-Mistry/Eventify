@@ -69,7 +69,7 @@ const EventCard: React.FC<{ inputVal?: string }> = ({ inputVal }) => {
                 <div className="group transition-transform hover:-translate-y-1 hover:shadow-xl bg-white/70 backdrop-blur-md rounded-2xl border border-gray-200 shadow p-5 cursor-pointer hover:bg-white duration-300">
                   <div className="flex flex-col h-full justify-between">
                     <div>
-                      <h3 className="text-xl font-bold text-gray-800 group-hover:text-blue-600 transition">
+                      <h3 className="text-xl font-thin text-gray-800 group-hover:text-blue-600 transition">
                         {e.title}
                       </h3>
                       {/* <p className="text-xs text-gray-400 mt-1">#Hackathon #Event RS.{e.price}</p> */}
@@ -99,11 +99,8 @@ const EventCard: React.FC<{ inputVal?: string }> = ({ inputVal }) => {
                         Participants: <span className="font-semibold">{count > 100 ? `100+` : count}</span>
                       </span>
                       <span className="text-gray-500 text-sm">
-                        Organizer: <span className="font-semibold">
-                          {e.organizer.name.toUpperCase()
-                            .charAt(0) + e.organizer.name
-                              .slice(1, e.organizer.name.length).
-                              toLowerCase()}
+                        Organizer: <span className="">
+                          {e.organizer.name}
                         </span>
                       </span>
                     </div>

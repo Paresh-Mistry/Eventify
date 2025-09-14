@@ -25,12 +25,12 @@ const MembersAside: React.FC<MembersAsideProps> = ({ team }) => {
           <h3 className="text-xl font-thin text-blue-800 mb-5 border-b border-gray-300 pb-2">
             Team Members
           </h3>
-          <span className="">{member?.name.toUpperCase()}</span>
+          <div className="text-green-800 my-2">{member?.name.toUpperCase()}</div>
           <ul className="space-y-2">
             {member?.members.map((member, index) => (
               <li key={member.id} className="flex justify-between items-center text-gray-700">
-                <span>{index + 1}. {member.user.name.toUpperCase()}</span>
-                <span className="text-xs hidden sm:block">({member.user.phone})</span>
+                <span>{index + 1}. {member.user.name}</span>
+                <span className="text-xs rounded-2xl hidden sm:block">joined</span>
               </li>
             )) || "Team Member here"}
           </ul>

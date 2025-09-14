@@ -47,37 +47,44 @@ def login(response:Response,
         role: UserRole = Form(UserRole.user),
         db: Session = Depends(get_db)
 ):
-    user = get_user_email(db, email)
-
-    if not user or not verifyPassword(password, user.password):
-        raise HTTPException(status_code=401, detail="Invalid credentials")
     
-    token = accessToken({"data":user.email})
-    response.set_cookie(
-        key="access_token",
-        value=token,
-        httponly=True,
-        max_age=900,  # 15 minutes = 900 seconds
-        expires=900,
-        samesite="Lax",
-        secure=False  # change to True in production (HTTPS)
-    )
+    try:
+        user = get_user_email(email, db)
 
-    return {
-        "Accesstoken": token,
-        "TokenType":"bearer"
-    }
+        if not user or not verifyPassword(password, user.password):
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+        
+        token = accessToken({"data":user.email})
+        print(token)
+        response.set_cookie(
+            key="access_token",
+            value=token,
+            httponly=True,
+            max_age=900,  # 15 minutes = 900 seconds
+            expires=900,
+            samesite="Lax",
+            secure=False  # change to True in production (HTTPS)
+        )
+    
+        return {
+            "access_token": token,
+            "token_type": "bearer"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=f"Error is {str(e)}")
 
 
 
 @router.get("/me")
 def get_me(request:Request, db: Session = Depends(get_db)):
+    print("\n\n starts \n\n")
     token = request.cookies.get("access_token")
     if not token :
        raise HTTPException(status_code=404 , detail="Invalid Credentials.")
         
     
     payload = decodeToken(token)
-    user = get_user_email(db, payload['data'])
+    print({"payload":payload})
+    user = get_user_email(payload['data'] , db)
     return user
 
