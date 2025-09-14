@@ -21,10 +21,10 @@ def register(
     db: Session = Depends(get_db)
 ):
   
-    # user = get_user_email(db, email)
+    user = get_user_email(email, db)
 
-    # if user:
-    #     raise HTTPException(status_code=401, detail=f"User Already Exists")
+    if user:
+        raise HTTPException(status_code=401, detail=f"User Already Exists")
     
     new_user = createUser(
         db=db,
@@ -38,13 +38,11 @@ def register(
     return new_user
 
 
-@router.post('/login', response_model=Token )
-def login(response:Response,
-        name: str = Form(...),
+@router.post('/login/', response_model=Token )
+def login(
+        response:Response,
         email: str = Form(...),
         password: str = Form(...),
-        phone: str = Form(None),
-        role: UserRole = Form(UserRole.user),
         db: Session = Depends(get_db)
 ):
     
@@ -55,17 +53,18 @@ def login(response:Response,
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
         token = accessToken({"data":user.email})
-        print(token)
         response.set_cookie(
             key="access_token",
             value=token,
             httponly=True,
-            max_age=900,  # 15 minutes = 900 seconds
-            expires=900,
+            max_age=400,  # 15 minutes = 900 seconds
+            expires=400,
             samesite="Lax",
             secure=False  # change to True in production (HTTPS)
         )
-    
+        
+        print(email)
+
         return {
             "access_token": token,
             "token_type": "bearer"

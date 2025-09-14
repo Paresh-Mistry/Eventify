@@ -1,3 +1,4 @@
+
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
@@ -5,63 +6,54 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginUser, registerUser } from "../lib/api";
-import { useUser } from "@component/hooks/useUser";
+import { useAuth } from "@component/hooks/useAuth";
 
 const AuthPage = () => {
   const [isSignup, setIsSignup] = useState(true);
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState<"user" | "organizer">("user");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+
   const router = useRouter();
 
-  async function me() {
-    try {
-      const res = fetch("https://localhost:8000/me")
-      const resbody = (await res).json()
-      console.log(resbody)
-    }
-    catch (error) {
-      console.log("Error is ", error)
-    }
-  }
-
-  me()
+  const useauth = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      if (isSignup) {
-        // 🔹 Register
-        await registerUser({ name, email, password, role });
+    if (isSignup) {
+      // Register user
+      if (password) {
+        await useauth.register({ name, email, password, phone, role });
         alert("Account created! Please sign in.");
         setIsSignup(false);
-      } else {
-        // 🔹 Login
-        const res = await loginUser({ email, password });
-
-        console.log(res.data)
-
-        // store token (localStorage for demo)
-        localStorage.setItem("token", res.data.access_token);
-
-        router.push("/dashboard");
       }
-    } catch (err: any) {
-      alert(err.response?.data?.detail || "Something went wrong");
+
+    } else {
+      // Login user
+      const res = await useauth.login({ email, password });
+      if (await res?.data?.access_token) {
+        // localStorage.setItem("token", res?.data.access_token);
+        alert(`Logged in as ${email}`);
+        console.log("Login successful");
+      }
+
+      // router.push("/dashboard");
     }
-  };
+  }
 
   return (
-    <div className="flex items-center flex-col justify-center md:py-18 py-8">
+    <div className="flex items-center flex-col justify-center py-10">
       <div className="mb-5">
         <Link href="/" className="text-sm text-blue-600">
           Return Home <ArrowUpRight size={20} className="inline-flex" />
         </Link>
+        <button onClick={useauth.logout}>Logout</button>
       </div>
 
-      <div className="w-full max-w-full md:max-w-sm shadow-sm bg-white/10 backdrop-blur-lg rounded p-8">
+      <div className="w-full max-w-md shadow bg-white/10 backdrop-blur-lg rounded-lg p-8">
         <h2 className="text-3xl font-thin text-center mb-2">
           {isSignup ? "Create Account" : "Welcome Back"}
         </h2>
@@ -71,29 +63,34 @@ const AuthPage = () => {
             : "Sign in to your account"}
         </p>
 
+        {/* Error message */}
+        {useauth.error && <p className="text-red-500 text-sm mb-4">{useauth.error}</p> || "No Error"}
+
         {/* Role Selector */}
-        <div className="space-x-4 mb-6 w-full text-center">
-          <button
-            type="button"
-            onClick={() => setRole("user")}
-            className={`rounded-full text-sm px-2 py-1 border transition ${role === "user"
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-transparent border-gray-500 text-gray-500 hover:border-blue-400"
-              }`}
-          >
-            User
-          </button>
-          <button
-            type="button"
-            onClick={() => setRole("owner")}
-            className={`rounded-full border text-sm px-2 py-1 transition ${role === "owner"
-              ? "bg-green-600 text-white border-green-600"
-              : "bg-transparent border-gray-500 text-gray-500 hover:border-green-400"
-              }`}
-          >
-            Owner
-          </button>
-        </div>
+        {isSignup && (
+          <div className="space-x-4 mb-6 text-center">
+            <button
+              type="button"
+              onClick={() => setRole("user")}
+              className={`rounded-full text-sm px-3 py-1 border transition ${role === "user"
+                ? "bg-blue-600 text-white border-blue-600"
+                : "bg-transparent border-gray-500 text-gray-500 hover:border-blue-400"
+                }`}
+            >
+              User
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole("organizer")}
+              className={`rounded-full text-sm px-3 py-1 border transition ${role === "organizer"
+                ? "bg-green-600 text-white border-green-600"
+                : "bg-transparent border-gray-500 text-gray-500 hover:border-green-400"
+                }`}
+            >
+              Organizer
+            </button>
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -106,6 +103,7 @@ const AuthPage = () => {
               className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           )}
+
           <input
             type="email"
             value={email}
@@ -113,6 +111,7 @@ const AuthPage = () => {
             placeholder="Email"
             className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
           <input
             type="password"
             value={password}
@@ -121,11 +120,21 @@ const AuthPage = () => {
             className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
+          {isSignup && (
+            <input
+              type="number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Phone Number"
+              className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          )}
+
           <button
             type="submit"
             className="w-full py-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg text-white shadow-lg hover:opacity-90 transition"
           >
-            {isSignup ? "Sign Up" : "Sign In"} as {role}
+            {isSignup ? `Sign Up as ${role}` : "Sign In"}
           </button>
         </form>
 
@@ -142,8 +151,8 @@ const AuthPage = () => {
         </p>
       </div>
     </div>
-    // <p>User</p>
   );
 };
 
 export default AuthPage;
+
