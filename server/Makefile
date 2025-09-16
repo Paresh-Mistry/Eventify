@@ -39,7 +39,8 @@ env:
 
 migrate:
 	@echo "Running Alembic migrations..."
-	# Activate venv and run migrations
+	# run migrations
+	alembic revision --autogenerate -m "update models in db"
 	alembic upgrade head
 
 
