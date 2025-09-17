@@ -13,14 +13,9 @@ BACKEND_PORT = 8000
 	migrate
 	env
 	clean
+	start-env
 	dev
 	backend
-	frontend
-
-
-# Default target
-# -----------------------------
-dev: backend frontend
 
 
 
@@ -36,7 +31,6 @@ env:
 	fi
 
 
-
 migrate:
 	@echo "Running Alembic migrations..."
 	# run migrations
@@ -44,12 +38,12 @@ migrate:
 	alembic upgrade head
 
 
-backend:
+server:
 	@echo "Starting FastAPI server on http://localhost:$(BACKEND_PORT)"
 	uvicorn main:app --reload --host $(BACKEND_HOST) --port $(BACKEND_PORT) 
 
 
-# -----------------------------
+
 # Utility
 # -----------------------------
 clean:
