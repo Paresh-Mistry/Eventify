@@ -5,14 +5,14 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="py-24 px-4 text-center">
-        <span className="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded-sm dark:text-blue-400 border border-blue-400">OpenSource Events</span>
+        <span className="bg-blue-50 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded-sm dark:text-blue-400 border border-blue-400">OpenSource Events</span>
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans mt-4 mb-4">Welcome to Eventify</h1>
         <p className="text-lg md:text-xl mb-6">Discover and join amazing events near you!</p>
-        <Link href={'/Events'} className="border border-blue-600 text-blue-600 rounded-2xl px-6 py-2 shadow transition">
+        <Link href={'/Events'} className="bg-blue-400 shadow-md text-white rounded-2xl px-6 py-2 transition">
           Explore Events
         </Link>
       </section>
-      <section className="py-12 px-6 bg-gray-100 rounded-lg shadow mb-8">
+      <section className="py-12 max-w-7xl mx-auto px-6 bg-gray-100 md:rounded-full shadow-md mb-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl mb-6">Why Use Our Event Platform?</h2>
           <div className="grid gap-8 md:grid-cols-3">

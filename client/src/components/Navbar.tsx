@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { getCurrentUser } from "@component/app/lib/auth";
+import { User } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -11,12 +12,12 @@ const Navbar: React.FC = () => {
   return (
 
 
-    <nav className="shadow-md">
+    <nav className={`shadow-md  transition-normal  ${open ? "" : "rounded-2xl m-3 bg-gray-100"}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <span className="font-mono text-xl font-bold">Eventify</span>
+            <span className="text-2xl text-blue-800 font-bold">eventify</span>
           </div>
 
           {/* Desktop Menu */}
@@ -68,18 +69,25 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out px-2 bg-white shadow ${open ? 'max-h-[500px]' : 'max-h-[0px]'
+        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out bg-white shadow ${open ? 'max-h-[500px]' : 'max-h-[0px]'
           }`}
       >
-        <div className="space-y-3 mb-4">
-          <Link href="/" onClick={() => setOpen(false)} className="block px-2 text-gray-700 hover:text-blue-600 font-medium">
+        <div className="space-y-3 w-full px-4 mb-3">
+          <Link href="/" onClick={() => setOpen(false)} className="block text-gray-700 hover:text-blue-600 font-medium">
             Home
           </Link>
-          <Link href="/Events" onClick={() => setOpen(false)} className="block px-2 text-gray-700 hover:text-blue-600 font-medium">
+          <Link href="/Events" onClick={() => setOpen(false)} className="block text-gray-700 hover:text-blue-600 font-medium">
             Events
           </Link>
-          <Link href="/CreateEvent" onClick={() => setOpen(false)} className="block px-2 text-gray-700 hover:text-blue-600 font-medium">
+          <Link href="/CreateEvent" onClick={() => setOpen(false)} className="block text-gray-700 hover:text-blue-600 font-medium">
             Organize
+          </Link>
+        </div>
+
+        <div className="flex px-2 items-center gap-2 py-2 bg-blue-50">
+          <span className="bg-gray-200 p-1 rounded-full"><User /></span>
+          <Link onClick={()=>setOpen(false)} href={'/auth'} className="border px-1.5 py-1 w-full rounded-2xl text-center text-sm text-blue-700">
+            LOGIN
           </Link>
         </div>
       </div>

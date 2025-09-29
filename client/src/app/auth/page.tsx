@@ -50,7 +50,6 @@ const AuthPage = () => {
         <Link href="/" className="text-sm text-blue-600">
           Return Home <ArrowUpRight size={20} className="inline-flex" />
         </Link>
-        <button onClick={useauth.logout}>Logout</button>
       </div>
 
       <div className="w-full max-w-md shadow bg-white/10 backdrop-blur-lg rounded-lg p-8">
@@ -64,7 +63,7 @@ const AuthPage = () => {
         </p>
 
         {/* Error message */}
-        {useauth.error && <p className="text-red-500 text-sm mb-4">{useauth.error}</p> || "No Error"}
+        {useauth.error && <p className="text-red-500 text-sm mb-4">{useauth.error}</p>}
 
         {/* Role Selector */}
         {isSignup && (
@@ -100,7 +99,7 @@ const AuthPage = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Full Name"
-              className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           )}
 
@@ -109,7 +108,7 @@ const AuthPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
-            className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <input
@@ -117,7 +116,7 @@ const AuthPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           {isSignup && (
@@ -126,7 +125,7 @@ const AuthPage = () => {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="Phone Number"
-              className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-600 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 rounded-full bg-white/10 border border-gray-400 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           )}
 
