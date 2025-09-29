@@ -21,7 +21,6 @@ export const registerUser = (data: {
   });
 };
 
-
 export const loginUser = (data: { email: string; password: string }) => {
   return axios.post(`${API_URL}/login`, data, {
     headers: { "Content-Type": "application/json" },

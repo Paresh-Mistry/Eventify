@@ -10,9 +10,9 @@ export type AccordionProps = {
 export type BookButtonProps = {
   userId: number;
   eventId: number;
-  teamId : number;
+  teamId: number;
   eventDate: any;
   eventTitle: string;
   userEmail: string;
-  organizerEmail: string
+  organizerEmail: string;
 };

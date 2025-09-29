@@ -7,12 +7,12 @@ import { User } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const [open, setOpen] = useState(false);
-  const isLogin = getCurrentUser()
+  const isLogin = getCurrentUser();
 
   return (
-
-
-    <nav className={`shadow-md  transition-normal  ${open ? "" : "rounded-2xl m-3 bg-gray-100"}`}>
+    <nav
+      className={`shadow-md  transition-normal  ${open ? "" : "rounded-2xl m-3 bg-gray-100"}`}
+    >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
@@ -22,31 +22,55 @@ const Navbar: React.FC = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 font-medium">
+            <Link
+              href="/"
+              className="text-gray-700 hover:text-blue-600 font-medium"
+            >
               Home
             </Link>
-            <Link href="/Events" className="text-gray-700 hover:text-blue-600 font-medium">
+            <Link
+              href="/Events"
+              className="text-gray-700 hover:text-blue-600 font-medium"
+            >
               Events
             </Link>
-            <Link href="/CreateEvent" className="text-gray-700 hover:text-blue-600 font-medium">
+            <Link
+              href="/CreateEvent"
+              className="text-gray-700 hover:text-blue-600 font-medium"
+            >
               Organize
             </Link>
-            {isLogin && <div className="relative group">
-              <button className="text-gray-700 hover:text-blue-600 font-medium focus:outline-none">
-                Profile
-              </button>
-              {/* Dropdown */}
-              <div className="absolute  mt-2 w-44 bg-white border border-gray-500 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                <Link href="/about" className="block px-4 py-2 hover:bg-gray-200">My Hackathons</Link>
-                <Link href="/about" className="block px-4 py-2 hover:bg-gray-200">Edit Profile</Link>
+            {(isLogin && (
+              <div className="relative group">
+                <button className="text-gray-700 hover:text-blue-600 font-medium focus:outline-none">
+                  Profile
+                </button>
+                {/* Dropdown */}
+                <div className="absolute  mt-2 w-44 bg-white border border-gray-500 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                  <Link
+                    href="/about"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    My Hackathons
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="block px-4 py-2 hover:bg-gray-200"
+                  >
+                    Edit Profile
+                  </Link>
+                </div>
               </div>
-            </div> ||
+            )) || (
               <div className="space-x-3">
-                <Link href={'/auth'} className="border px-1.5 rounded-2xl text-sm text-blue-700">
+                <Link
+                  href={"/auth"}
+                  className="border px-1.5 rounded-2xl text-sm text-blue-700"
+                >
                   LOGIN
                 </Link>
               </div>
-            }
+            )}
           </div>
 
           <div className="md:hidden flex items-center">
@@ -55,11 +79,26 @@ const Navbar: React.FC = () => {
               className="text-gray-700 hover:text-blue-600 focus:outline-none"
               aria-label="Toggle Menu"
             >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 {open ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 8h16M4 16h16"
+                  />
                 )}
               </svg>
             </button>
@@ -69,29 +108,48 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out bg-white shadow ${open ? 'max-h-[500px]' : 'max-h-[0px]'
-          }`}
+        className={`md:hidden overflow-hidden transition-[max-height] duration-300 ease-in-out bg-white shadow ${
+          open ? "max-h-[500px]" : "max-h-[0px]"
+        }`}
       >
         <div className="space-y-3 w-full px-4 mb-3">
-          <Link href="/" onClick={() => setOpen(false)} className="block text-gray-700 hover:text-blue-600 font-medium">
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="block text-gray-700 hover:text-blue-600 font-medium"
+          >
             Home
           </Link>
-          <Link href="/Events" onClick={() => setOpen(false)} className="block text-gray-700 hover:text-blue-600 font-medium">
+          <Link
+            href="/Events"
+            onClick={() => setOpen(false)}
+            className="block text-gray-700 hover:text-blue-600 font-medium"
+          >
             Events
           </Link>
-          <Link href="/CreateEvent" onClick={() => setOpen(false)} className="block text-gray-700 hover:text-blue-600 font-medium">
+          <Link
+            href="/CreateEvent"
+            onClick={() => setOpen(false)}
+            className="block text-gray-700 hover:text-blue-600 font-medium"
+          >
             Organize
           </Link>
         </div>
 
         <div className="flex px-2 items-center gap-2 py-2 bg-blue-50">
-          <span className="bg-gray-200 p-1 rounded-full"><User /></span>
-          <Link onClick={()=>setOpen(false)} href={'/auth'} className="border px-1.5 py-1 w-full rounded-2xl text-center text-sm text-blue-700">
+          <span className="bg-gray-200 p-1 rounded-full">
+            <User />
+          </span>
+          <Link
+            onClick={() => setOpen(false)}
+            href={"/auth"}
+            className="border px-1.5 py-1 w-full rounded-2xl text-center text-sm text-blue-700"
+          >
             LOGIN
           </Link>
         </div>
       </div>
-    </nav >
+    </nav>
   );
 };
 

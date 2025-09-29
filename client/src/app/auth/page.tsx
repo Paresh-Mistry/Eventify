@@ -1,4 +1,3 @@
-
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
@@ -18,7 +17,7 @@ const AuthPage = () => {
 
   const router = useRouter();
 
-  const useauth = useAuth()
+  const useauth = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +29,6 @@ const AuthPage = () => {
         alert("Account created! Please sign in.");
         setIsSignup(false);
       }
-
     } else {
       // Login user
       const res = await useauth.login({ email, password });
@@ -42,7 +40,7 @@ const AuthPage = () => {
 
       // router.push("/dashboard");
     }
-  }
+  };
 
   return (
     <div className="flex items-center flex-col justify-center py-10">
@@ -63,7 +61,9 @@ const AuthPage = () => {
         </p>
 
         {/* Error message */}
-        {useauth.error && <p className="text-red-500 text-sm mb-4">{useauth.error}</p>}
+        {useauth.error && (
+          <p className="text-red-500 text-sm mb-4">{useauth.error}</p>
+        )}
 
         {/* Role Selector */}
         {isSignup && (
@@ -71,20 +71,22 @@ const AuthPage = () => {
             <button
               type="button"
               onClick={() => setRole("user")}
-              className={`rounded-full text-sm px-3 py-1 border transition ${role === "user"
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-transparent border-gray-500 text-gray-500 hover:border-blue-400"
-                }`}
+              className={`rounded-full text-sm px-3 py-1 border transition ${
+                role === "user"
+                  ? "bg-blue-600 text-white border-blue-600"
+                  : "bg-transparent border-gray-500 text-gray-500 hover:border-blue-400"
+              }`}
             >
               User
             </button>
             <button
               type="button"
               onClick={() => setRole("organizer")}
-              className={`rounded-full text-sm px-3 py-1 border transition ${role === "organizer"
-                ? "bg-green-600 text-white border-green-600"
-                : "bg-transparent border-gray-500 text-gray-500 hover:border-green-400"
-                }`}
+              className={`rounded-full text-sm px-3 py-1 border transition ${
+                role === "organizer"
+                  ? "bg-green-600 text-white border-green-600"
+                  : "bg-transparent border-gray-500 text-gray-500 hover:border-green-400"
+              }`}
             >
               Organizer
             </button>
@@ -154,4 +156,3 @@ const AuthPage = () => {
 };
 
 export default AuthPage;
-

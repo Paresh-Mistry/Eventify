@@ -15,19 +15,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const user = getCurrentUser();
 
-    // if (!user) {
-    //   redirect('/auth'); // 🔒 Not authenticated, send to login
-    // }
-
+  // if (!user) {
+  //   redirect('/auth'); // Not authenticated, send to login
+  // }
 
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}
-      >
+      <body className={`antialiased`}>
         <Navbar />
         {/* {user.name} */}
         {children}
