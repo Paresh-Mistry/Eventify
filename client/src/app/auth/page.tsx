@@ -124,7 +124,7 @@ const AuthPage = () => {
 
           {isSignup && (
             <input
-              type="number"
+              type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="Phone Number"
