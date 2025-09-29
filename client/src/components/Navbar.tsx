@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <span className="text-2xl text-blue-800 font-bold">eventify</span>
+            <span className={"text-2xl text-blue-800 font-bold"}>eventify</span>
           </div>
 
           {/* Desktop Menu */}

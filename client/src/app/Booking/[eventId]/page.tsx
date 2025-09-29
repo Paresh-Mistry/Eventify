@@ -11,6 +11,7 @@ import { IndianRupee } from "lucide-react";
 import { log } from "console";
 import MembersAside from "@component/components/MembersAside";
 import { EventType } from "@component/types/event";
+import clsx from "clsx";
 
 async function getEvent(eventId: string): Promise<EventType | null> {
   try {
@@ -85,11 +86,11 @@ export default async function EventPage({
           </div>
 
           <span
-            className={`px-2 py-1 rounded-full text-xs font-semibold ${
+            className={clsx(`px-2 py-1 rounded-full text-xs font-semibold` , 
               event.is_online
                 ? "bg-green-100 text-green-700"
                 : "bg-red-100 text-red-700"
-            }`}
+            )}
           >
             {event.is_online ? "Online" : "Offline"}
           </span>
@@ -173,7 +174,7 @@ export default async function EventPage({
               organizerEmail={event.email}
               eventTitle={event.title}
               eventDate={<FormatDate eventdate={event.date} />}
-              teamId={event.team?.id}
+              teamId={event.team.id}
               userId={event.organizer_id}
               eventId={event.id}
             />

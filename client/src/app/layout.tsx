@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "../components/Navbar";
 import { getCurrentUser } from "./lib/auth";
 import { redirect } from "next/navigation";
+import clsx from "clsx";
+import { montserrat } from "@component/fonts/font";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -23,7 +25,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`antialiased`}>
+      <body className={clsx(`antialiased` , montserrat.className)}>
         <Navbar />
         {/* {user.name} */}
         {children}

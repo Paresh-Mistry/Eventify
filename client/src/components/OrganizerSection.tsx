@@ -1,5 +1,7 @@
 "use client";
 
+import { orbitron } from "@component/fonts/font";
+import clsx from "clsx";
 import { RocketIcon } from "lucide-react";
 
 type OrganizerSectionProps = {
@@ -12,7 +14,7 @@ export default function OrganizerSection({ nextStep }: OrganizerSectionProps) {
       <div className="max-w-6xl w-full text-center rounded-2xl">
         {/* Left Text Section */}
         <div className="flex flex-col justify-center">
-          <h1 className="md:text-6xl text-3xl  font-bold text-gray-800 mb-4">
+          <h1 className={clsx("md:text-5xl text-3xl text-gray-800 mb-4", orbitron.className)}>
             Welcome Organizer
           </h1>
           <p className="text-gray-600 mb-6 text-lg">

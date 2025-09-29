@@ -3,6 +3,8 @@
 import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import OrganizerSection from "@component/components/OrganizerSection";
+import clsx from "clsx";
+import { orbitron } from "@component/fonts/font";
 
 export default function CreateEvent() {
   const [step, setStep] = useState<number>(1);
@@ -73,7 +75,7 @@ export default function CreateEvent() {
         body: form,
       });
 
-      const data = await response.json(); // 🔥 READ ONLY ONCE
+      const data = await response.json(); 
 
       console.log(data.data);
 
@@ -93,7 +95,7 @@ export default function CreateEvent() {
   return (
     <div className="flex items-center justify-center px-6">
       <form onSubmit={handleSubmit} className="w-full rounded-lg space-y-6">
-        <h1 className="text-3xl pt-4 font-bold mb-4">
+        <h1 className={clsx("text-3xl pt-4 font-bold mb-4", orbitron.className)}>
           {step == 1 ? "" : step - 1 + " - Step"}
         </h1>
 
@@ -362,9 +364,9 @@ export default function CreateEvent() {
               type="button"
               onClick={prevStep}
               disabled={step === 1}
-              className={`px-4 py-2 border rounded ${
+              className={clsx(`px-4 py-2 border rounded`,
                 step === 1 ? "cursor-not-allowed" : "hover:bg-gray-200"
-              }`}
+              )}
             >
               <ArrowLeftCircle />
             </button>

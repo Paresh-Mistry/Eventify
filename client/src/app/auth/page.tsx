@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loginUser, registerUser } from "../lib/api";
 import { useAuth } from "@component/hooks/useAuth";
+import clsx from "clsx";
 
 const AuthPage = () => {
   const [isSignup, setIsSignup] = useState(true);
@@ -71,22 +72,22 @@ const AuthPage = () => {
             <button
               type="button"
               onClick={() => setRole("user")}
-              className={`rounded-full text-sm px-3 py-1 border transition ${
+              className={clsx(`rounded-full text-sm px-3 py-1 border transition `,
                 role === "user"
                   ? "bg-blue-600 text-white border-blue-600"
                   : "bg-transparent border-gray-500 text-gray-500 hover:border-blue-400"
-              }`}
+              )}
             >
               User
             </button>
             <button
               type="button"
               onClick={() => setRole("organizer")}
-              className={`rounded-full text-sm px-3 py-1 border transition ${
+              className={clsx(`rounded-full text-sm px-3 py-1 border transition`,
                 role === "organizer"
                   ? "bg-green-600 text-white border-green-600"
                   : "bg-transparent border-gray-500 text-gray-500 hover:border-green-400"
-              }`}
+              )}
             >
               Organizer
             </button>

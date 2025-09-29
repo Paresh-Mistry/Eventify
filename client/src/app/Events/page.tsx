@@ -3,6 +3,8 @@
 import { useState } from "react";
 import EventCard from "@component/components/EventCard";
 import { Search } from "lucide-react";
+import clsx from "clsx";
+import { orbitron } from "@component/fonts/font";
 
 export default function Page() {
   Intl.NumberFormat("en-dwdsd", {});
@@ -13,7 +15,7 @@ export default function Page() {
     <div className="max-w-7xl mx-auto px-4 py-6">
       {/* Header + Search */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <h1 className="text-2xl text-gray-800">Explore Events</h1>
+        <h1 className={clsx("text-2xl text-gray-800", orbitron.className)}>Explore Events</h1>
 
         <div className="relative">
           <input

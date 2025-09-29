@@ -1,4 +1,6 @@
 import Link from "next/link";
+import clsx from "clsx";
+import { orbitron } from "@component/fonts/font";
 
 export default function Home() {
   return (
@@ -8,7 +10,7 @@ export default function Home() {
         <span className="bg-blue-50 text-blue-800 text-xs font-medium me-2 px-2.5 py-1 rounded-sm dark:text-blue-400 border border-blue-400">
           OpenSource Events
         </span>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-sans mt-4 mb-4">
+        <h1 className={clsx("text-3xl sm:text-4xl md:text-5xl font-sans mt-4 mb-4", orbitron.className)}>
           Welcome to Eventify
         </h1>
         <p className="text-lg md:text-xl mb-6">

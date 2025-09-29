@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Check, Copy } from "lucide-react";
+import clsx from "clsx";
 
 export default function TeamSection({
   handleClick,
@@ -27,6 +28,8 @@ export default function TeamSection({
     formData.append("name", teamName);
     formData.append("event_id", eventId.toString());
     formData.append("leader_id", userId.toString());
+
+    console.log(formData)
 
     try {
       const res = await axios.post("http://localhost:8000/create", formData, {
@@ -76,13 +79,13 @@ export default function TeamSection({
       <div className="flex w-full gap-1 mb-3">
         <button
           onClick={() => setTeamBox("create")}
-          className={`${teamBox === "create" ? "bg-gray-300" : "border border-gray-300"} w-1/2 py-1 rounded`}
+          className={clsx(teamBox === "create" ? "bg-gray-300" : "border border-gray-300", ` w-1/2 py-1 rounded`)}
         >
           Create
         </button>
         <button
           onClick={() => setTeamBox("join")}
-          className={`${teamBox === "create" ? "border border-gray-300" : "bg-gray-300"} w-1/2 py-1 rounded`}
+          className={clsx("w-1/2 py-1 rounded" , teamBox === "create" ? "border border-gray-300" : "bg-gray-300")}
         >
           Join
         </button>
