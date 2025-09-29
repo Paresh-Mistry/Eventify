@@ -32,35 +32,76 @@ Eventify is a full-stack event booking and management system designed for organi
 ---
 
 ## 📷 Screenshots
+<img width="1891" height="902" alt="image" src="https://github.com/user-attachments/assets/f70b06dc-f59d-4a34-b3a8-3bbfe6638351" />
 
-![image](https://github.com/user-attachments/assets/60db6816-3a11-4e92-b2db-0983214947cd)
+<img width="1901" height="908" alt="image" src="https://github.com/user-attachments/assets/be75cfbc-f8b6-45a7-a34a-4d6df52df731" />
+<img width="1917" height="913" alt="image" src="https://github.com/user-attachments/assets/f588707c-5473-4feb-bad0-8c1e5f4d0305" />
 
-![image](https://github.com/user-attachments/assets/9ee4bcba-15e0-47cd-abe8-207829398af4)
+<img width="1897" height="907" alt="image" src="https://github.com/user-attachments/assets/07c963d0-e8b2-44e4-8d13-25c6092691d6" />
 
-![image](https://github.com/user-attachments/assets/acda2cab-c396-49e3-9b4e-82e7415031e6)
+<img width="1901" height="910" alt="image" src="https://github.com/user-attachments/assets/d3a409f6-90ad-442f-a5eb-7e4712b8ee9d" />
 
-![image](https://github.com/user-attachments/assets/daffdcca-be95-4c55-b410-226148fe881f)
+<img width="1918" height="907" alt="image" src="https://github.com/user-attachments/assets/132f5077-c5a2-4fab-b1be-6a76b6adfb94" />
 
-![image](https://github.com/user-attachments/assets/17a82b3a-2e17-4ff8-b822-c0c6e7f970e6)
+<img width="1918" height="912" alt="image" src="https://github.com/user-attachments/assets/beee3ee7-9ce0-447a-99ee-9a1c2bc1b6b8" />
 
-![image](https://github.com/user-attachments/assets/1823e079-f1dd-44d2-9ee9-500030a4aa67)
+<img width="447" height="797" alt="image" src="https://github.com/user-attachments/assets/2070c18b-5a04-4a40-8769-2e28248944ce" />
+<img width="452" height="800" alt="image" src="https://github.com/user-attachments/assets/3b9c49dc-f6ac-43c8-9a76-73806b339932" />
 
 
+--- 
 
 ## 🧪 Run Locally
 
 ### 📦 Backend (FastAPI)
 
 ```bash
+# Navigate to server directory
 cd server
+
+# Create virtual environment
 python -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+
+# Activate environment
+# On macOS/Linux
+source venv/bin/activate
+# On Windows
+venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Run server with hot reload
 uvicorn main:app --reload
+
 ```
+
 
 ### 📦 Frontend (Next JS)
 
 ```bash
 cd client
 npm run dev
+```
+
+### 🛠 Developer Setup: Pre-commit Hooks
+
+To ensure code quality and consistency, we use **pre-commit** hooks for formatting and linting.
+
+```bash
+# Install pre-commit globally (if not already)
+pip install pre-commit
+
+# Install hooks defined in .pre-commit-config.yaml
+pre-commit install
+
+# Run pre-commit manually on all files
+pre-commit run --all-files
+
+# To upgrade pre-commit hooks in future
+pre-commit autoupdate
+```
+
+# 📜 License
+
+> Copyright (c) 2025 Eventify
