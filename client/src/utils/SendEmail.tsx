@@ -1,5 +1,5 @@
 // utils/email.ts
-import axios from 'axios';
+import axios from "axios";
 
 export type SendMailParams = {
   eventTitle: string;
@@ -15,7 +15,7 @@ export const sendMail = async ({
   eventDate,
 }: SendMailParams): Promise<boolean> => {
   try {
-    const res = await axios.post('/api/send-email', {
+    const res = await axios.post("/api/send-email", {
       name: eventTitle,
       email: userEmail,
       organizer: organizerEmail,
@@ -25,11 +25,11 @@ export const sendMail = async ({
     if (res.status === 200) {
       return true;
     } else {
-      console.error('Failed to send email:', res.statusText);
+      console.error("Failed to send email:", res.statusText);
       return false;
     }
   } catch (error) {
-    console.error('Email error:', error);
+    console.error("Email error:", error);
     return false;
   }
 };

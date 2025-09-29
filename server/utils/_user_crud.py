@@ -6,14 +6,19 @@ from pydantic import EmailStr
 from models.model import User
 
 def get_user_email(email:str, db:Session = Depends(get_db)) -> User|None:
+   
+   user = db.query(User).filter(User.email == email).first()
+
    try:
-     user = db.query(User).filter(User.email == email).all()
-     print(user)
-     if user:
-       raise HTTPException(status_code=409, detail=f"User Already Exists, Error - {str(e)} , {user.email}")
+     user = user
+     print({"user":user})
+    #  if user:
+    #    print("Finding user in db")
+    #    raise HTTPException(status_code=409, detail=f"User Already Exists, Error - {str(e)} , {user.email}")
+     print("Working...")
      return user
    except Exception as e:
-     raise HTTPException(status_code=404 , detail=f"No User Found, Error - {str(e), {user}}")
+     raise HTTPException(status_code=404 , detail=f"No User Found, Error - {str(e)}, {user.name}")
    
 
 def createUser(db:Session, email:EmailStr, name:str, password:str, phone:int, role:Enum):

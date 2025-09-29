@@ -40,8 +40,8 @@ class UserOut(UserBase):
 
 
 class Token(BaseModel):
-    token: str
-    type: str = "bearer"
+    access_token: str
+    token_type: str
 
 
 

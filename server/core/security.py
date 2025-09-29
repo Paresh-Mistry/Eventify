@@ -20,12 +20,12 @@ def accessToken(data : dict , exp_delta : timedelta | None = None):
     encode = data.copy()
     expiretime = datetime.utcnow() + (exp_delta or timedelta(minutes=30))
     encode.update({"exp":expiretime})
-    return jwt\
-        .encode(encode, "super-secret-key", algorithm=["HS256"])
+    print({"encode":encode})
+    return jwt.encode(encode, "super-secret-key", algorithm="HS256")
+
 
 
 def decodeToken(token : str):
-    return jwt\
-        .decode(token, "super-secret-key" , algorithms=["HS256"])
+    return jwt.decode(token, "super-secret-key" , algorithms="HS256")
 
 
