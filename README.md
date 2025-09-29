@@ -74,7 +74,8 @@ pip install -r requirements.txt
 
 # Run server with hot reload
 uvicorn main:app --reload
-
+or
+make server 
 ```
 
 
