@@ -45,9 +45,10 @@ Eventify is a full-stack event booking and management system designed for organi
 
 <img width="1918" height="912" alt="image" src="https://github.com/user-attachments/assets/beee3ee7-9ce0-447a-99ee-9a1c2bc1b6b8" />
 
+<div align="center">
 <img width="447" height="797" alt="image" src="https://github.com/user-attachments/assets/2070c18b-5a04-4a40-8769-2e28248944ce" />
 <img width="452" height="800" alt="image" src="https://github.com/user-attachments/assets/3b9c49dc-f6ac-43c8-9a76-73806b339932" />
-
+</div>
 
 --- 
 
